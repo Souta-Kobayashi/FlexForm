@@ -1,0 +1,47 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+description: Nuxt 4 のディレクトリ構成・命名・配置ルール（Nuxtソース編集時に適用）
+globs:
+  - app/**
+  - server/**
+  - shared/**
+  - public/**
+  - types/**
+alwaysApply: false
+---
+
+# Nuxt 4 Structure & Conventions
+
+## Top-level
+- `app/`    : **フロント（Vue アプリ）側のコード**を集約。従来の `pages/` や `components/` などは原則ここへ。
+- `server/` : **Nitro（サーバ）側**のコード。API/ミドルウェア/ルート等。
+- `shared/` : **app と server 両方**から使う共通コード（Nuxt v3.14+）。Vue/Nitro 依存は不可。
+- `public/` : 静的配信ファイル（そのまま配信）。
+- `types/`  : 共有型定義（ドメイン型、API 型など）。
+
+## app/ 配下（フロント側）
+- `app/pages/`       : ルーティングされるページ。1ページ＝1ユースケース。ファイルベースルーティング。
+- `app/components/`  : 再利用 UI。`BaseXxx`/`AppXxx`/`FeatureXxx` 等の接頭辞を推奨。
+- `app/layouts/`     : レイアウト（`<NuxtLayout>`）。ページ横断の枠組み。
+- `app/composables/` : `useXxx` フック。サーバ依存は分離（`useClientXxx` / `useServerXxx`）。
+- `app/middleware/`  : ルートミドルウェア（認可/リダイレクト等）。
+- `app/plugins/`     : プラグイン登録（クライアント/サーバのモードを明示）。
+- `app/assets/`      : ビルド対象のアセット（CSS, 画像, フォント等）。
+- `app/utils/`       : フレームワーク非依存の純関数群。
+
+## server/ 配下（サーバ側）
+- `server/api/**`        : API ルート（`/api/*` にマッピング）。
+- `server/middleware/**` : サーバミドルウェア。
+- `server/routes/**`     : 非 `/api` のルートが必要な場合。
+- `server/plugins/**`    : Nitro プラグイン。
+- `server/utils/**`      : サーバ専用ユーティリティ。
+
+## 命名・依存
+- 依存の向きは **components → composables → utils/shared** の一方向を徹底。
+- Vue から `server/` 直参照はしない。共通化は `shared/` を経由。
+- 旧構成（トップレベル `pages/` 等）は互換だが、新規は `app/` 配下へ。
+- フロント側の共通モジュールには`composables/`を用いる。

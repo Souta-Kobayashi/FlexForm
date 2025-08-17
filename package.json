@@ -1,0 +1,35 @@
+{
+  "name": "flexform",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:migrate": "prisma migrate dev",
+    "db:studio": "prisma studio"
+  },
+  "dependencies": {
+    "nuxt": "^4.0.3",
+    "vue": "^3.5.18",
+    "vue-router": "^4.5.1",
+    "@prisma/client": "^5.22.0",
+    "@nuxtjs/tailwindcss": "^6.12.1",
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
+    "@vueuse/core": "^12.0.0",
+    "@vueuse/nuxt": "^12.0.0",
+    "vue-draggable-next": "^2.2.1",
+    "nodemailer": "^6.9.14",
+    "@types/nodemailer": "^6.4.15"
+  },
+  "devDependencies": {
+    "prisma": "^5.22.0",
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.2"
+  }
+}

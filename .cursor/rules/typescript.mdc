@@ -1,0 +1,40 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+description: TypeScript rules for safety, readability, and predictable DX.
+globs:
+alwaysApply: true
+---
+
+# TypeScript Rules
+
+## Compiler & Config
+- `"strict": true` を前提（noImplicitAny/This, strictNullChecks すべてON）。
+- `"moduleResolution": "bundler"` を前提に、Nuxtの解決と一致させる。
+- `"paths"` は `@/*` のみ。多段エイリアスは作らない。
+
+## Types over Any
+- `any` 禁止（最後の手段でも `unknown` を優先）。必要時は型ガードを提供。
+- 非同期関数は必ず `Promise<ReturnType>` を明示。
+- 特にAPI層は**入出力を型で明示する**。
+- as ~~ as などの二重アサーションを禁止する。
+
+## Interfaces vs Types
+- **Interface**: オブジェクトの契約（拡張される可能性があるドメイン型）。
+- **Type**: ユニオン、Mapped、`Pick/Omit` などの変形、関数型定義。
+- 外部公開の契約は interface、内部変形は type。
+
+## Immutability & Narrowing
+- 可能な限り `readonly`、`as const` を活用。
+- 型ガード関数（`isXxx(value): value is Xxx`）を積極利用し、narrowingを明確化。
+
+## Errors
+- `catch (e)` は `unknown` として扱い、型狭めを行う。
+
+## Linting & Format
+- ESLint: @typescript-eslint の推奨 + no-explicit-any, consistent-type-imports を有効化。
+- Importは**type-only import**を原則（`import type { Xxx } from '...'`）。
+- Prettierはルールで争わない（printWidth 100 / semi true / singleQuote true 程度に固定）。

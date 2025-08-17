@@ -1,0 +1,81 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  userTenants UserTenant[]
+
+  @@map("users")
+}
+
+model Tenant {
+  id        String   @id @default(cuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  userTenants UserTenant[]
+  forms       Form[]
+
+  @@map("tenants")
+}
+
+model UserTenant {
+  id       String @id @default(cuid())
+  userId   String
+  tenantId String
+  role     String @default("member") // "admin", "editor", "member"
+
+  // Relations
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, tenantId])
+  @@map("user_tenants")
+}
+
+model Form {
+  id         String   @id @default(cuid())
+  tenantId   String
+  title      String
+  schema     Json     // JSON Schema for form fields
+  publicPath String   @unique // URL path for public form access
+  isPublic   Boolean  @default(true)
+  version    Int      @default(1)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  // Relations
+  tenant      Tenant       @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  submissions Submission[]
+
+  @@map("forms")
+}
+
+model Submission {
+  id        String   @id @default(cuid())
+  formId    String
+  payload   Json     // Form response data
+  createdAt DateTime @default(now())
+
+  // Relations
+  form Form @relation(fields: [formId], references: [id], onDelete: Cascade)
+
+  @@map("submissions")
+} 

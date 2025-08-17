@@ -1,0 +1,40 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+description: Vue 3 SFC rules for <script setup>, props/emits typing, and template style.
+globs:
+  - components/**/*.vue
+  - pages/**/*.vue
+alwaysApply: false
+---
+
+# Vue (SFC) Rules
+
+## Script
+- すべて `<script setup lang="ts">`。Composition API を標準化。
+- ブロックの順は上から`<script> <template>`の順とする。
+- Propsは`interface Props`で宣言する
+- Props は `defineProps<Props>()`、emit は `defineEmits<{ change: [id: number] }>()` の型付き。
+- v-modelが渡されるコンポーネントは`defineModel`で宣言する
+
+## Template
+- アクセシビリティ：フォーム要素には必ず `label`／`aria-label`。表は `<caption>` 検討。
+- 条件分岐は `v-if` と `v-show` を使い分け（初回非表示 = `v-show`、DOM生成コスト大 = `v-if`）。
+- リストは `:key` 必須。配列インデックスの使用は最後の手段。
+
+## Styling in SFC
+- `<style scoped>` を基本。Tailwind ユーティリティ優先、複雑な状態はクラスバインドで表現。
+- 深いネストは避ける。コンポーネント分割を優先。
+
+## Patterns
+- Atomic Designデザインパターンは不要
+- Presentational と Container の分離：UIは props/emit に集中、データ取得はページ or composable。
+- フォームは**単方向データフロー**（親がデータを持ち、子はイベントで通知）。
+- Watchは副作用用途のみ。派生値は `computed` で。
+
+## Testing
+- コンポーネントは**役割の公開API**（props, emitted events）をテスト。内部実装に依存しない。
+- E2Eがカバーする領域は単体テストで重複しないよう整理。
