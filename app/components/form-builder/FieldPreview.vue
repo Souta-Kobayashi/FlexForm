@@ -6,7 +6,7 @@ interface Props {
 }
 
 defineProps<Props>()
-</script> 
+</script>
 
 <template>
   <div>

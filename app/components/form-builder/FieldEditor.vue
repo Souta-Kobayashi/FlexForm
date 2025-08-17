@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { FormField } from '~~/types/form'
-import FieldPreview from './FieldPreview.vue'
+import BaseInput from '~/components/base/BaseInput.vue'
+import FieldPreview from '~/components/form-builder/FieldPreview.vue'
 
 interface Props {
   fieldTypeLabel: string
@@ -34,7 +35,7 @@ const updateOptions = (event: Event) => {
   
   editableField.value = { ...editableField.value, options }
 }
-</script> 
+</script>
 
 <template>
   <div
